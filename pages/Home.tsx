@@ -1,0 +1,213 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import Hero from '../components/Hero';
+import { ShieldCheck, Truck, Award, MessageCircle } from 'lucide-react';
+
+const Home: React.FC = () => {
+    const revealProps = {
+        initial: { opacity: 0, y: 50 },
+        whileInView: { opacity: 1, y: 0 },
+        viewport: { once: true, margin: "-100px" },
+        transition: { duration: 0.8, ease: "easeOut" }
+    } as const;
+
+    return (
+        <div className="overflow-hidden">
+            <Hero />
+
+            {/* Quality Section - Free delivery, Highest quality, Online support */}
+            <motion.section
+                {...revealProps}
+                className="bg-gray-100 py-16 sm:py-20 lg:py-32 px-4 sm:px-6 lg:px-12 border-t border-gray-200 relative overflow-hidden"
+            >
+                <div className="absolute inset-0 bg-gradient-to-b from-orange-50/30 to-transparent pointer-events-none"></div>
+                <div className="max-w-screen-2xl mx-auto relative z-10">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+                        <div className="flex gap-6 text-left items-start group">
+                            <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300 shadow-inner border border-orange-100">
+                                <Truck className="w-10 h-10" aria-hidden />
+                            </div>
+                            <div>
+                                <h2 className="text-xl sm:text-2xl font-black text-black uppercase tracking-tight mb-2">Free delivery</h2>
+                                <p className="text-gray-500 leading-relaxed font-medium">Any purchase of $200 or more qualifies for free delivery within the USA.</p>
+                            </div>
+                        </div>
+                        <div className="flex gap-6 text-left items-start group">
+                            <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300 shadow-inner border border-orange-100">
+                                <Award className="w-10 h-10" aria-hidden />
+                            </div>
+                            <div>
+                                <h2 className="text-xl sm:text-2xl font-black text-black uppercase tracking-tight mb-2">Highest quality peptides</h2>
+                                <p className="text-gray-500 leading-relaxed font-medium">Our products are scientifically-formulated and produced in cGMP facilities.</p>
+                            </div>
+                        </div>
+                        <div className="flex gap-6 text-left items-start group">
+                            <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300 shadow-inner border border-orange-100">
+                                <MessageCircle className="w-10 h-10" aria-hidden />
+                            </div>
+                            <div>
+                                <h2 className="text-xl sm:text-2xl font-black text-black uppercase tracking-tight mb-2">Online support</h2>
+                                <p className="text-gray-500 leading-relaxed font-medium">
+                                    Have questions? We can help. Email us or connect with us via our{' '}
+                                    <a href="/contact" className="text-orange-500 font-semibold hover:underline focus:underline">Contact</a>
+                                    {' '}page.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </motion.section>
+
+            {/* Products Section */}
+            <motion.section
+                {...revealProps}
+                className="bg-white py-16 sm:py-20 lg:py-32 px-4 sm:px-6 lg:px-12"
+            >
+                <div className="max-w-screen-2xl mx-auto">
+                    <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end mb-10 sm:mb-12 lg:mb-20 gap-6 sm:gap-8 text-center lg:text-left">
+                        <div className="max-w-2xl">
+                            <h2 className="text-3xl sm:text-4xl md:text-7xl font-black text-black uppercase tracking-tighter mb-4 sm:mb-6 lg:mb-8 leading-[0.9]">Featured<br />Research Compounds</h2>
+                            <p className="text-lg md:text-xl text-gray-500 font-medium">Premium grade peptides synthesized for high-impact laboratory validation.</p>
+                        </div>
+                        <a
+                            href="/peptides"
+                            className="w-full lg:w-auto px-10 lg:px-12 py-4 lg:py-5 bg-orange-500 text-white rounded-full font-black uppercase tracking-widest text-xs md:text-sm hover:bg-orange-600 transition-colors text-center min-h-[48px] flex items-center justify-center"
+                        >
+                            View All Peptides
+                        </a>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+                        {[
+                            { name: 'CJC-IPAMORELIN', series: 'GROWTH', price: '$78.00', image: '/CJC-IPAMORELIN-removebg-preview.png' },
+                            { name: 'MOTS-C', series: 'METABOLIC', price: '$85.00', image: '/MOTS-C-removebg-preview.png' },
+                            { name: 'RETATRUTIDE', series: 'METABOLIC', price: '$89.00', image: '/RETATRUTIDE-removebg-preview.png' },
+                            { name: 'BPC157_TB500', series: 'REPAIR', price: '$95.00', image: '/BPC157_TB500-removebg-preview.png' }
+                        ].map((product, i) => (
+                            <div key={i} className="group bg-gray-50 p-6 lg:p-10 rounded-[2.5rem] lg:rounded-[4rem] border border-gray-100 hover:border-black/10 hover:shadow-2xl hover:bg-white transition-all duration-500 flex flex-col">
+                                <div className="aspect-square bg-white rounded-[1.5rem] lg:rounded-[2rem] mb-8 lg:mb-10 flex items-center justify-center overflow-hidden border border-gray-50 shadow-inner group-hover:scale-[1.05] transition-all relative p-0">
+                                    <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-transparent"></div>
+                                    <div className="absolute w-48 h-48 lg:w-64 lg:h-64 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                                    <img src={product.image} alt={product.name} className="relative z-10 w-full h-full object-contain scale-[1.4] lg:scale-[1.6]" />
+                                </div>
+                                <div className="flex-1 flex flex-col">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div>
+                                            <div className="text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase mb-1">{product.series}</div>
+                                            <h4 className="text-2xl font-black text-black uppercase tracking-tight">{product.name}</h4>
+                                        </div>
+                                        <span className="font-black text-black">{product.price}</span>
+                                    </div>
+                                    <div className="mt-auto pt-6 border-t border-gray-100">
+                                        <a
+                                            href={`/peptides?inquiry=${encodeURIComponent(product.name)}`}
+                                            className="block w-full py-4 bg-orange-500 text-white rounded-full font-black uppercase tracking-[0.15em] text-[10px] hover:bg-orange-600 transition-colors shadow-xl shadow-orange-500/5 text-center"
+                                        >
+                                            View product
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </motion.section>
+
+            {/* About Summary */}
+            <motion.section
+                {...revealProps}
+                className="bg-zinc-950 py-16 sm:py-24 lg:py-40 px-4 sm:px-6 lg:px-12 relative overflow-hidden"
+            >
+                <div className="max-w-screen-2xl mx-auto flex flex-col items-center text-center relative z-10">
+                    <h2 className="text-xs lg:text-sm font-black tracking-[0.4em] text-orange-500 uppercase mb-8 sm:mb-12 lg:mb-16 underline decoration-orange-500 decoration-2 underline-offset-8">The Novara Labs Mission</h2>
+                    <p className="text-2xl sm:text-3xl md:text-6xl font-black text-white max-w-5xl leading-tight uppercase tracking-tighter px-2 sm:px-4 lg:px-0">
+                        We bridge the gap between <span className="text-white/40 italic">advanced chemical synthesis</span> and <span className="text-white/40 italic">breakthrough scientific research</span>.
+                    </p>
+                    <div className="mt-12 lg:mt-20 w-32 h-[1px] bg-white/20"></div>
+                    <p className="mt-12 lg:mt-20 text-gray-400 max-w-2xl text-base md:text-lg font-medium leading-relaxed">
+                        Novara Labs was founded on the principle of absolute pharmaceutical-grade precision. Our facilities prioritize data-backed purity profiles above all else, ensuring that your research is never compromised by inconsistent variables.
+                    </p>
+                </div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] lg:w-[800px] h-[300px] lg:h-[800px] bg-white/[0.03] blur-[100px] lg:blur-[150px] rounded-full pointer-events-none"></div>
+            </motion.section>
+
+            {/* Validation Section */}
+            <motion.section
+                {...revealProps}
+                className="bg-white py-16 sm:py-24 lg:py-40 px-4 sm:px-6 lg:px-12 relative overflow-hidden border-t border-gray-100"
+            >
+                <div className="max-w-screen-2xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 lg:gap-24 items-center relative z-10">
+                    <div className="space-y-6 sm:space-y-8 lg:space-y-12 text-center lg:text-left">
+                        <div className="text-[10px] font-black tracking-[0.4em] text-gray-400 uppercase">Enterprise Security</div>
+                        <h2 className="text-3xl sm:text-4xl md:text-8xl font-black text-black uppercase tracking-tighter leading-[0.8]">
+                            Verify Your <br />
+                            <span className="text-gray-300 italic">Batch.</span>
+                        </h2>
+                        <p className="text-lg md:text-xl text-gray-500 font-medium leading-relaxed max-w-lg mx-auto lg:mx-0">
+                            Every Novara Labs product is cryptographically signed. Use our verification engine to ensure your research integrity remains uncompromised.
+                        </p>
+                        <div className="flex items-center justify-center lg:justify-start space-x-6 lg:space-x-8">
+                            <div className="flex -space-x-3">
+                                {[1, 2, 3, 4].map((i) => (
+                                    <div key={i} className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-gray-100 border-2 border-white flex items-center justify-center">
+                                        <div className="w-4 h-4 lg:w-5 lg:h-5 bg-gray-200 rounded-full"></div>
+                                    </div>
+                                ))}
+                            </div>
+                            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Checked by 12,000+ researchers</p>
+                        </div>
+                    </div>
+                    <div className="bg-gray-50 border border-gray-100 rounded-2xl sm:rounded-[2.5rem] lg:rounded-[4rem] p-6 sm:p-8 md:p-16 shadow-2xl shadow-gray-200/50">
+                        <div className="space-y-8 lg:space-y-10">
+                            <div className="w-16 h-16 lg:w-20 lg:h-20 bg-orange-500 rounded-2xl lg:rounded-3xl flex items-center justify-center text-white shadow-2xl shadow-orange-500/20 mb-8 lg:mb-10 mx-auto">
+                                <ShieldCheck className="w-8 h-8 lg:w-10 lg:h-10" />
+                            </div>
+                            <div className="text-center">
+                                <h3 className="text-xl lg:text-2xl font-black text-black uppercase tracking-tight mb-4">Quick Validation</h3>
+                                <p className="text-gray-400 text-sm font-medium">Enter your 12-digit product code below.</p>
+                            </div>
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    placeholder="NOV-XXXX-XXXX"
+                                    className="w-full bg-white border border-gray-100 rounded-2xl lg:rounded-3xl px-6 lg:px-8 py-4 lg:py-5 text-base lg:text-lg font-mono tracking-[0.2em] lg:tracking-[0.3em] text-center text-black focus:outline-none focus:border-orange-500 transition-all uppercase placeholder:text-gray-200"
+                                />
+                            </div>
+                            <button
+                                onClick={() => window.location.href = '/validate'}
+                                className="w-full bg-orange-500 text-white rounded-full py-5 lg:py-6 font-black uppercase tracking-widest text-xs md:text-sm hover:bg-orange-600 transition-colors shadow-2xl shadow-orange-500/10"
+                            >
+                                Go to Validation Center
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div className="absolute -bottom-1/2 -left-1/4 w-[500px] lg:w-[1000px] h-[500px] lg:h-[1000px] bg-gray-100 blur-[100px] lg:blur-[150px] rounded-full pointer-events-none opacity-50"></div>
+            </motion.section>
+
+            {/* Contact CTA */}
+            <motion.section
+                {...revealProps}
+                className="bg-black py-12 sm:py-20 lg:py-32 px-4 sm:px-6 lg:px-12"
+            >
+                <div className="max-w-screen-2xl mx-auto bg-white rounded-2xl sm:rounded-[2.5rem] lg:rounded-[4rem] p-6 sm:p-10 lg:p-32 text-center text-black relative overflow-hidden group shadow-2xl shadow-white/5">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-black/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+                    <h2 className="text-2xl sm:text-3xl md:text-8xl font-black uppercase tracking-tighter mb-6 sm:mb-8 lg:mb-12 leading-none relative z-10 px-2 sm:px-4">
+                        Ready to Accelerate<br className="hidden md:block" />Your Research?
+                    </h2>
+                    <p className="text-gray-500 mb-8 sm:mb-10 lg:mb-16 text-base sm:text-lg lg:text-xl max-w-xl mx-auto font-medium relative z-10 px-2">
+                        Contact our engineering and support team for bulk inquiries or custom synthesis requirements.
+                    </p>
+                    <a
+                        href="/contact"
+                        className="relative z-10 inline-block px-8 sm:px-10 lg:px-16 py-4 lg:py-6 bg-orange-500 text-white rounded-full font-black uppercase tracking-widest text-sm lg:text-lg hover:bg-orange-600 transition-colors shadow-2xl shadow-orange-500/20 min-h-[48px] flex items-center justify-center"
+                    >
+                        Inquire Now
+                    </a>
+                </div>
+            </motion.section>
+        </div>
+    );
+};
+
+export default Home;

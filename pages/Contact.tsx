@@ -1,0 +1,145 @@
+import React, { useState } from 'react';
+import { Mail, Phone, MapPin, Send, MessageSquare } from 'lucide-react';
+import { useMessage } from '../context/MessageContext';
+
+const Contact: React.FC = () => {
+    const { showMessage } = useMessage();
+    const [reason, setReason] = useState('');
+
+    const contactReasons = [
+        'General Inquiry',
+        'Product Information',
+        'Order Support',
+        'Technical Support',
+        'Bulk & Wholesale',
+        'Complaint',
+        'Feedback'
+    ];
+
+    return (
+        <div className="bg-white min-h-screen pt-28 sm:pt-32 lg:pt-48 pb-16 sm:pb-24 lg:pb-32 px-4 sm:px-6 lg:px-12">
+            <div className="max-w-screen-2xl mx-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-32">
+                    {/* Contact Info */}
+                    <div className="text-center lg:text-left">
+                        <div className="text-[10px] font-black tracking-[0.4em] text-gray-300 uppercase mb-3 sm:mb-4 lg:mb-8">Get In Touch</div>
+                        <h1 className="text-3xl sm:text-4xl md:text-8xl font-black text-black uppercase tracking-tighter leading-[0.8] mb-6 sm:mb-8 lg:mb-12">
+                            Human <br />
+                            <span className="text-gray-200">Support.</span>
+                        </h1>
+                        <p className="text-lg md:text-xl text-gray-400 font-medium leading-relaxed mb-12 lg:mb-20 max-w-lg mx-auto lg:mx-0">
+                            Our engineering and support teams are available 24/7 to assist with your scientific inquiries.
+                        </p>
+
+                        <div className="space-y-8 lg:space-y-12">
+                            <div className="flex flex-col lg:flex-row items-center lg:items-start space-y-4 lg:space-y-0 lg:space-x-8">
+                                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-orange-500 rounded-2xl lg:rounded-3xl flex items-center justify-center text-white shadow-lg shadow-orange-500/20">
+                                    <Mail size={24} />
+                                </div>
+                                <div>
+                                    <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Email Us</h4>
+                                    <p className="text-lg lg:text-xl font-bold text-black uppercase">contact@novaralabs.com</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col lg:flex-row items-center lg:items-start space-y-4 lg:space-y-0 lg:space-x-8">
+                                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-orange-500 rounded-2xl lg:rounded-3xl flex items-center justify-center text-white shadow-lg shadow-orange-500/20">
+                                    <Phone size={24} />
+                                </div>
+                                <div>
+                                    <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Call Us</h4>
+                                    <p className="text-lg lg:text-xl font-bold text-black uppercase">+1 (888) NOVARA</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col lg:flex-row items-center lg:items-start space-y-4 lg:space-y-0 lg:space-x-8">
+                                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-orange-500 rounded-2xl lg:rounded-3xl flex items-center justify-center text-white shadow-lg shadow-orange-500/20">
+                                    <MapPin size={24} />
+                                </div>
+                                <div>
+                                    <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Headquarters</h4>
+                                    <p className="text-lg lg:text-xl font-bold text-black uppercase text-center lg:text-left">Boston Research District, MA</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Contact Form */}
+                    <div className="bg-gray-50 rounded-2xl sm:rounded-[2.5rem] lg:rounded-[5rem] p-5 sm:p-8 lg:p-20 border border-gray-100 shadow-2xl shadow-gray-200/50 mt-10 sm:mt-12 lg:mt-0">
+                        <form
+                            className="space-y-6 lg:space-y-8"
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                showMessage({
+                                    variant: 'success',
+                                    title: 'Message sent',
+                                    message: "We've received your message and will get back to you soon.",
+                                    buttonLabel: 'OK',
+                                });
+                            }}
+                        >
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Full Name</label>
+                                    <input
+                                        type="text"
+                                        required
+                                        placeholder="John Doe"
+                                        className="w-full bg-white border border-gray-100 rounded-2xl lg:rounded-3xl px-6 lg:px-8 py-4 lg:py-5 text-sm font-medium focus:outline-none focus:border-orange-500 transition-all"
+                                    />
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Email Address</label>
+                                    <input
+                                        type="email"
+                                        required
+                                        placeholder="john@research.org"
+                                        className="w-full bg-white border border-gray-100 rounded-2xl lg:rounded-3xl px-6 lg:px-8 py-4 lg:py-5 text-sm font-medium focus:outline-none focus:border-orange-500 transition-all"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Reason for Contacting</label>
+                                <div className="relative">
+                                    <select
+                                        required
+                                        value={reason}
+                                        onChange={(e) => setReason(e.target.value)}
+                                        className="w-full bg-white border border-gray-100 rounded-2xl lg:rounded-3xl px-6 lg:px-8 py-4 lg:py-5 text-sm font-medium focus:outline-none focus:border-orange-500 transition-all appearance-none"
+                                    >
+                                        <option value="" disabled>Select a reason...</option>
+                                        {contactReasons.map((r) => (
+                                            <option key={r} value={r}>{r}</option>
+                                        ))}
+                                    </select>
+                                    <div className="absolute right-6 lg:right-8 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                        <MessageSquare size={18} />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-3">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Message</label>
+                                <textarea
+                                    required
+                                    placeholder="How can we help your research today?"
+                                    rows={6}
+                                    className="w-full bg-white border border-gray-100 rounded-[2rem] lg:rounded-[3rem] px-6 lg:px-8 py-5 lg:py-6 text-sm font-medium focus:outline-none focus:border-orange-500 transition-all resize-none"
+                                ></textarea>
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="w-full bg-orange-500 text-white rounded-full py-5 lg:py-6 font-black uppercase tracking-widest text-xs md:text-sm flex items-center justify-center space-x-4 hover:bg-orange-600 transition-colors shadow-2xl shadow-orange-500/10 min-h-[48px]"
+                            >
+                                <Send size={18} />
+                                <span>Send Message</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Contact;
