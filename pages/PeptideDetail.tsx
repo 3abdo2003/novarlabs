@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import InquiryModal from '../components/InquiryModal';
-import { findPeptideBySlug, type Product } from '../products';
+import { findPeptideBySlug, peptides, type Product } from '../products';
 
 const PeptideDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -23,9 +23,22 @@ const PeptideDetail: React.FC = () => {
     return null;
   }
 
+  const relatedProducts = (() => {
+    const sameSeries = peptides.filter(
+      (p) => p.slug !== product.slug && p.series === product.series,
+    );
+    if (sameSeries.length >= 3) return sameSeries.slice(0, 3);
+
+    const others = peptides.filter(
+      (p) => p.slug !== product.slug && p.series !== product.series,
+    );
+
+    return [...sameSeries, ...others].slice(0, 3);
+  })();
+
   return (
     <div className="bg-white min-h-screen">
-      <div className="pt-28 sm:pt-32 lg:pt-40 px-4 sm:px-6 lg:px-12 pb-16 sm:pb-24 lg:pb-32 max-w-screen-2xl mx-auto">
+      <div className="pt-28 sm:pt-32 lg:pt-40 px-4 sm:px-6 lg:px-12 pb-20 sm:pb-28 lg:pb-32 max-w-screen-2xl mx-auto">
         <button
           type="button"
           onClick={() => navigate('/peptides')}
@@ -97,6 +110,55 @@ const PeptideDetail: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {relatedProducts.length > 0 && (
+          <section className="mt-16 lg:mt-20 border-t border-gray-100 pt-10 lg:pt-12">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4 mb-8">
+              <div>
+                <h2 className="text-xs font-black tracking-[0.3em] text-gray-400 uppercase mb-2">
+                  Related Products
+                </h2>
+                <p className="text-sm sm:text-base text-gray-500 max-w-xl">
+                  Explore additional compounds that complement this peptide in growth, metabolic, or
+                  repair-focused research protocols.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+              {relatedProducts.map((rp) => (
+                <div
+                  key={rp.slug}
+                  className="group bg-gray-50 p-4 sm:p-6 rounded-2xl lg:rounded-3xl border border-gray-100 hover:border-black/10 hover:bg-white hover:shadow-xl transition-all duration-300 flex flex-col"
+                >
+                  <Link to={`/peptides/${rp.slug}`} className="flex-1 flex flex-col">
+                    <div className="aspect-square bg-white rounded-xl lg:rounded-2xl mb-4 flex items-center justify-center overflow-hidden border border-gray-50 shadow-inner relative">
+                      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-transparent" />
+                      <img
+                        src={rp.image}
+                        alt={rp.name}
+                        className="relative z-10 w-full h-full object-contain scale-[1.3]"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="text-[9px] font-black tracking-[0.2em] text-gray-400 uppercase">
+                        {rp.series}
+                      </div>
+                      <div className="flex items-baseline justify-between gap-3">
+                        <h3 className="text-lg font-black text-black uppercase tracking-tight">
+                          {rp.name}
+                        </h3>
+                        <span className="text-sm font-black text-black whitespace-nowrap">
+                          {rp.price}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
 
       <InquiryModal
