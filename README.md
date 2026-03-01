@@ -1,20 +1,34 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+## Novara Labs – Research Peptides Catalog
 
-# Run and deploy your AI Studio app
+This repository contains the marketing and catalog site for Novara Labs research peptides. It is a React + Vite single-page application with product listing, product detail pages, and an inquiry workflow.
 
-This contains everything you need to run your app locally.
+### Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/1JT0RwKzncsvK7x1uPkIgUbt57JP0-yHR
+- **Peptides catalog**: Browse all peptides on the `/peptides` page.
+- **Product detail pages**: Each peptide has a dedicated page (`/peptides/:slug`) with full description, size, and pricing.
+- **Related products**: Detail pages surface related compounds for easier exploration.
+- **Inquiry flow**: A consistent “Send Inquiry” modal is available from cards and product pages.
 
-## Run Locally
+### Run Locally
 
-**Prerequisites:**  Node.js
+**Prerequisites:** Node.js (LTS recommended), npm
 
-
-1. Install dependencies:
+1. Install dependencies:  
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
+2. Start the development server:  
    `npm run dev`
+3. Open the URL printed in the terminal (usually `http://localhost:5173`).
+
+### Build for Production
+
+To create an optimized production build:
+
+```bash
+npm run build
+```
+
+You can preview the production build locally with:
+
+```bash
+npm run preview
+```
