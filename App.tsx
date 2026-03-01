@@ -4,6 +4,7 @@ import { MessageProvider } from './context/MessageContext';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Peptides from './pages/Peptides';
+import PeptideDetail from './pages/PeptideDetail';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import ProductValidation from './pages/ProductValidation';
@@ -19,6 +20,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/peptides" element={<Peptides />} />
+            <Route path="/peptides/:slug" element={<PeptideDetail />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/validate" element={<ProductValidation />} />

@@ -1,21 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import InquiryModal, { type Product } from '../components/InquiryModal';
+import { Link, useSearchParams } from 'react-router-dom';
+import InquiryModal from '../components/InquiryModal';
+import { peptides, findPeptideByName, type Product } from '../products';
 
 const Peptides: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const products = [
-        { name: 'CJC-IPAMORELIN', series: 'GROWTH', price: '$78.00', image: '/CJC-IPAMORELIN-removebg-preview.png', description: 'Growth hormone-releasing hormone (GHRH) analog combined with a selective GH secretagogue. Research applications include studies on GH pulsatility, IGF-1 elevation, and metabolic parameters. The blend mimics natural somatotropic signaling with extended half-life.' },
-        { name: 'MOTS-C', series: 'METABOLIC', price: '$85.00', image: '/MOTS-C-removebg-preview.png', description: 'Mitochondrial-derived peptide (14 aa) encoded in the 12S rRNA. Studied for its role in metabolic regulation, insulin sensitivity, and exercise capacity. Research focuses on mitochondrial stress response and age-related metabolic pathways.' },
-        { name: 'RETATRUTIDE', series: 'METABOLIC', price: '$89.00', image: '/RETATRUTIDE-removebg-preview.png', description: 'Triple agonist targeting GLP-1, GIP, and glucagon receptors. Used in metabolic and weight-related research. Supports studies on energy expenditure, glucose homeostasis, and receptor signaling cascades.' },
-        { name: 'AOD-9604', series: 'METABOLIC', price: '$82.00', image: '/AOD-9604-removebg-preview.png', description: 'C-terminal fragment (177–191) of growth hormone. Research indicates lipolytic and metabolic effects without full GH receptor activation. Studied for lipid metabolism and fat cell signaling in laboratory settings.' },
-        { name: 'BPC157_TB500', series: 'REPAIR', price: '$95.00', image: '/BPC157_TB500-removebg-preview.png', description: 'Combination of Body Protection Compound and thymosin beta-4 fragment. Research applications include tissue repair, angiogenesis, cell migration, and wound-healing models. Used in studies on tendon, muscle, and vascular recovery.' },
-        { name: 'GHK-CU', series: 'REPAIR', price: '$88.00', image: '/GHK-CU-removebg-preview.png', description: 'Copper-binding peptide complex (glycyl-l-histidyl-l-lysine). Studied for collagen synthesis, wound healing, antioxidant activity, and tissue remodeling. Used in dermatological and regenerative research.' },
-        { name: 'SLU-PP-332', series: 'RESEARCH', price: '$92.00', image: '/SLU-PP-332-removebg-preview.png', description: 'Research compound of interest in metabolic and signaling studies. For in vitro and in vivo laboratory use under appropriate protocols. Purity and stability verified for controlled research environments.' }
-    ];
 
     const handleInquiry = (product: Product) => {
         setSelectedProduct(product);
@@ -25,13 +16,13 @@ const Peptides: React.FC = () => {
     useEffect(() => {
         const inquiry = searchParams.get('inquiry');
         if (!inquiry) return;
-        const product = products.find((p) => p.name === decodeURIComponent(inquiry));
+        const product = findPeptideByName(decodeURIComponent(inquiry));
         if (product) {
             setSelectedProduct(product);
             setIsModalOpen(true);
         }
         setSearchParams({}, { replace: true });
-    }, []);
+    }, [searchParams, setSearchParams]);
 
     return (
         <div className="bg-white min-h-screen">
@@ -59,15 +50,21 @@ const Peptides: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-                    {products.map((product, i) => (
-                        <div key={i} className="group bg-gray-50 p-4 sm:p-6 lg:p-10 rounded-2xl sm:rounded-[2.5rem] lg:rounded-[4rem] border border-gray-100 hover:border-black/10 hover:shadow-2xl hover:bg-white transition-all duration-500 flex flex-col">
-                            <div className="aspect-square bg-white rounded-[1.5rem] lg:rounded-[2rem] mb-8 lg:mb-10 flex items-center justify-center overflow-hidden border border-gray-50 shadow-inner group-hover:scale-[1.05] transition-all relative p-0">
-                                <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-transparent"></div>
-                                <div className="absolute w-48 h-48 lg:w-64 lg:h-64 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                                <img src={product.image} alt={product.name} className="relative z-10 w-full h-full object-contain scale-[1.4] lg:scale-[1.6]" />
-                            </div>
+                    {peptides.map((product) => (
+                        <div
+                            key={product.slug}
+                            className="group bg-gray-50 p-4 sm:p-6 lg:p-10 rounded-2xl sm:rounded-[2.5rem] lg:rounded-[4rem] border border-gray-100 hover:border-black/10 hover:shadow-2xl hover:bg-white transition-all duration-500 flex flex-col"
+                        >
+                            <Link
+                                to={`/peptides/${product.slug}`}
+                                className="flex-1 flex flex-col"
+                            >
+                                <div className="aspect-square bg-white rounded-[1.5rem] lg:rounded-[2rem] mb-8 lg:mb-10 flex items-center justify-center overflow-hidden border border-gray-50 shadow-inner group-hover:scale-[1.05] transition-all relative p-0">
+                                    <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-transparent"></div>
+                                    <div className="absolute w-48 h-48 lg:w-64 lg:h-64 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                                    <img src={product.image} alt={product.name} className="relative z-10 w-full h-full object-contain scale-[1.4] lg:scale-[1.6]" />
+                                </div>
 
-                            <div className="flex-1 flex flex-col">
                                 <div className="space-y-4">
                                     <div className="flex justify-between items-start">
                                         <div>
@@ -76,20 +73,16 @@ const Peptides: React.FC = () => {
                                         </div>
                                         <span className="font-black text-black">{product.price}</span>
                                     </div>
-
-                                    <p className="text-sm text-gray-500 font-medium leading-relaxed">
-                                        {product.description}
-                                    </p>
                                 </div>
+                            </Link>
 
-                                <div className="mt-auto pt-6 border-t border-gray-100">
-                                    <button
-                                        onClick={() => handleInquiry(product)}
-                                        className="w-full py-4 bg-orange-500 text-white rounded-full font-black uppercase tracking-[0.15em] text-[10px] hover:bg-orange-600 transition-colors shadow-xl shadow-orange-500/5"
-                                    >
-                                        Send Inquiry
-                                    </button>
-                                </div>
+                            <div className="mt-auto pt-6 border-t border-gray-100">
+                                <button
+                                    onClick={() => handleInquiry(product)}
+                                    className="w-full py-4 bg-orange-500 text-white rounded-full font-black uppercase tracking-[0.15em] text-[10px] hover:bg-orange-600 transition-colors shadow-xl shadow-orange-500/5"
+                                >
+                                    Send Inquiry
+                                </button>
                             </div>
                         </div>
                     ))}

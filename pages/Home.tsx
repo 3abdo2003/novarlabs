@@ -1,7 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
 import { ShieldCheck, Truck, Award, MessageCircle } from 'lucide-react';
+import { findPeptideByName } from '../products';
 
 const Home: React.FC = () => {
     const revealProps = {
@@ -83,7 +85,11 @@ const Home: React.FC = () => {
                             { name: 'MOTS-C', series: 'METABOLIC', price: '$85.00', image: '/MOTS-C-removebg-preview.png' },
                             { name: 'RETATRUTIDE', series: 'METABOLIC', price: '$89.00', image: '/RETATRUTIDE-removebg-preview.png' },
                             { name: 'BPC157_TB500', series: 'REPAIR', price: '$95.00', image: '/BPC157_TB500-removebg-preview.png' }
-                        ].map((product, i) => (
+                        ].map((product, i) => {
+                            const productData = findPeptideByName(product.name);
+                            const href = productData ? `/peptides/${productData.slug}` : '/peptides';
+
+                            return (
                             <div key={i} className="group bg-gray-50 p-6 lg:p-10 rounded-[2.5rem] lg:rounded-[4rem] border border-gray-100 hover:border-black/10 hover:shadow-2xl hover:bg-white transition-all duration-500 flex flex-col">
                                 <div className="aspect-square bg-white rounded-[1.5rem] lg:rounded-[2rem] mb-8 lg:mb-10 flex items-center justify-center overflow-hidden border border-gray-50 shadow-inner group-hover:scale-[1.05] transition-all relative p-0">
                                     <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-transparent"></div>
@@ -99,16 +105,16 @@ const Home: React.FC = () => {
                                         <span className="font-black text-black">{product.price}</span>
                                     </div>
                                     <div className="mt-auto pt-6 border-t border-gray-100">
-                                        <a
-                                            href={`/peptides?inquiry=${encodeURIComponent(product.name)}`}
+                                        <Link
+                                            to={href}
                                             className="block w-full py-4 bg-orange-500 text-white rounded-full font-black uppercase tracking-[0.15em] text-[10px] hover:bg-orange-600 transition-colors shadow-xl shadow-orange-500/5 text-center"
                                         >
                                             View product
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
-                        ))}
+                        )})}
                     </div>
                 </div>
             </motion.section>

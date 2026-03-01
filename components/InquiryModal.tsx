@@ -1,14 +1,7 @@
 import React from 'react';
 import { X } from 'lucide-react';
 import { useMessage } from '../context/MessageContext';
-
-export interface Product {
-    name: string;
-    series: string;
-    price: string;
-    image: string;
-    description: string;
-}
+import type { Product } from '../products';
 
 interface InquiryModalProps {
     isOpen: boolean;
