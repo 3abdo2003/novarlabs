@@ -5,6 +5,7 @@ import { useMessage } from '../context/MessageContext';
 const Contact: React.FC = () => {
     const { showMessage } = useMessage();
     const [reason, setReason] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const contactReasons = [
         'General Inquiry',
@@ -38,7 +39,7 @@ const Contact: React.FC = () => {
                                 </div>
                                 <div>
                                     <h4 className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Email Us</h4>
-                                    <p className="text-lg lg:text-xl font-bold text-black uppercase">contact@novaralabs.com</p>
+                                    <p className="text-lg lg:text-xl font-bold text-black uppercase">support@novaralabs.eu</p>
                                 </div>
                             </div>
                             <div className="flex flex-col lg:flex-row items-center lg:items-start space-y-4 lg:space-y-0 lg:space-x-8">
@@ -66,14 +67,66 @@ const Contact: React.FC = () => {
                     <div className="bg-gray-50 rounded-2xl sm:rounded-[2.5rem] lg:rounded-[5rem] p-5 sm:p-8 lg:p-20 border border-gray-100 shadow-2xl shadow-gray-200/50 mt-10 sm:mt-12 lg:mt-0">
                         <form
                             className="space-y-6 lg:space-y-8"
-                            onSubmit={(e) => {
+                            onSubmit={async (e) => {
                                 e.preventDefault();
-                                showMessage({
-                                    variant: 'success',
-                                    title: 'Message sent',
-                                    message: "We've received your message and will get back to you soon.",
-                                    buttonLabel: 'OK',
-                                });
+                                if (isSubmitting) return;
+
+                                const form = e.currentTarget;
+                                const formData = new FormData(form);
+                                const name = (formData.get('name') as string)?.trim();
+                                const email = (formData.get('email') as string)?.trim();
+                                const phone = (formData.get('phone') as string)?.trim();
+                                const message = (formData.get('message') as string)?.trim();
+
+                                if (!name || !email || !message || !reason) {
+                                    showMessage({
+                                        variant: 'error',
+                                        title: 'Missing information',
+                                        message: 'Please fill in all required fields.',
+                                        buttonLabel: 'OK',
+                                    });
+                                    return;
+                                }
+
+                                try {
+                                    setIsSubmitting(true);
+                                    const response = await fetch('/api/send-contact', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({
+                                            name,
+                                            email,
+                                            phone,
+                                            reason,
+                                            message,
+                                        }),
+                                    });
+
+                                    if (!response.ok) {
+                                        throw new Error('Failed to send message');
+                                    }
+
+                                    form.reset();
+                                    setReason('');
+                                    showMessage({
+                                        variant: 'success',
+                                        title: 'Message sent',
+                                        message: "We've received your message and will get back to you soon.",
+                                        buttonLabel: 'OK',
+                                    });
+                                } catch (error) {
+                                    console.error(error);
+                                    showMessage({
+                                        variant: 'error',
+                                        title: 'Unable to send message',
+                                        message: 'There was a problem sending your message. Please try again or email us directly.',
+                                        buttonLabel: 'OK',
+                                    });
+                                } finally {
+                                    setIsSubmitting(false);
+                                }
                             }}
                         >
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
@@ -81,6 +134,7 @@ const Contact: React.FC = () => {
                                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Full Name</label>
                                     <input
                                         type="text"
+                                        name="name"
                                         required
                                         placeholder="John Doe"
                                         className="w-full bg-white border border-gray-100 rounded-2xl lg:rounded-3xl px-6 lg:px-8 py-4 lg:py-5 text-sm font-medium focus:outline-none focus:border-orange-500 transition-all"
@@ -90,8 +144,18 @@ const Contact: React.FC = () => {
                                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Email Address</label>
                                     <input
                                         type="email"
+                                        name="email"
                                         required
                                         placeholder="john@research.org"
+                                        className="w-full bg-white border border-gray-100 rounded-2xl lg:rounded-3xl px-6 lg:px-8 py-4 lg:py-5 text-sm font-medium focus:outline-none focus:border-orange-500 transition-all"
+                                    />
+                                </div>
+                                <div className="space-y-3 md:col-span-2 lg:col-span-1 xl:col-span-2">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Phone Number</label>
+                                    <input
+                                        type="tel"
+                                        name="phone"
+                                        placeholder="+1 (555) 000-0000"
                                         className="w-full bg-white border border-gray-100 rounded-2xl lg:rounded-3xl px-6 lg:px-8 py-4 lg:py-5 text-sm font-medium focus:outline-none focus:border-orange-500 transition-all"
                                     />
                                 </div>
@@ -120,6 +184,7 @@ const Contact: React.FC = () => {
                             <div className="space-y-3">
                                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-400 ml-4">Message</label>
                                 <textarea
+                                    name="message"
                                     required
                                     placeholder="How can we help your research today?"
                                     rows={6}
@@ -129,10 +194,17 @@ const Contact: React.FC = () => {
 
                             <button
                                 type="submit"
-                                className="w-full bg-orange-500 text-white rounded-full py-5 lg:py-6 font-black uppercase tracking-widest text-xs md:text-sm flex items-center justify-center space-x-4 hover:bg-orange-600 transition-colors shadow-2xl shadow-orange-500/10 min-h-[48px]"
+                                disabled={isSubmitting}
+                                className={`w-full text-white rounded-full py-5 lg:py-6 font-black uppercase tracking-widest text-xs md:text-sm flex items-center justify-center space-x-4 transition-colors shadow-2xl min-h-[48px] ${isSubmitting
+                                        ? 'bg-orange-400 cursor-not-allowed shadow-none'
+                                        : 'bg-orange-500 hover:bg-orange-600 shadow-orange-500/10'
+                                    }`}
                             >
-                                <Send size={18} />
-                                <span>Send Message</span>
+                                {isSubmitting && (
+                                    <span className="w-4 h-4 border-2 border-white/60 border-t-white rounded-full animate-spin" />
+                                )}
+                                {!isSubmitting && <Send size={18} />}
+                                <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
                             </button>
                         </form>
                     </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { useMessage } from '../context/MessageContext';
 import type { Product } from '../products';
@@ -11,19 +11,76 @@ interface InquiryModalProps {
 
 const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose, product }) => {
     const { showMessage } = useMessage();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     if (!isOpen || !product) return null;
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // TODO: wire to your backend or email service
-        onClose();
-        showMessage({
-            variant: 'success',
-            title: 'Inquiry sent',
-            message: "We'll respond within 24 hours.",
-            buttonLabel: 'OK',
-        });
+
+        if (isSubmitting) return;
+
+        const form = e.currentTarget;
+        const formData = new FormData(form);
+        const name = (formData.get('name') as string)?.trim();
+        const email = (formData.get('email') as string)?.trim();
+        const phone = (formData.get('phone') as string)?.trim();
+        const message = (formData.get('message') as string)?.trim();
+
+        if (!name || !email || !message) {
+            showMessage({
+                variant: 'error',
+                title: 'Missing information',
+                message: 'Please fill in your name, email, and message before sending your inquiry.',
+                buttonLabel: 'OK',
+            });
+            return;
+        }
+
+        try {
+            setIsSubmitting(true);
+            const response = await fetch('/api/send-inquiry', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name,
+                    email,
+                    phone,
+                    message,
+                    product: {
+                        name: product.name,
+                        slug: product.slug,
+                        series: product.series,
+                        price: product.price,
+                    },
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to send inquiry');
+            }
+
+            onClose();
+            showMessage({
+                variant: 'success',
+                title: 'Inquiry sent',
+                message: "We've received your inquiry and will respond within 24 hours.",
+                buttonLabel: 'OK',
+            });
+            form.reset();
+        } catch (error) {
+            console.error(error);
+            showMessage({
+                variant: 'error',
+                title: 'Unable to send inquiry',
+                message: 'There was a problem sending your inquiry. Please try again in a moment or email support@novaralabs.eu directly.',
+                buttonLabel: 'OK',
+            });
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -75,6 +132,7 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose, product })
                             </label>
                             <input
                                 id="inquiry-name"
+                                name="name"
                                 type="text"
                                 required
                                 placeholder="Your name"
@@ -87,9 +145,22 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose, product })
                             </label>
                             <input
                                 id="inquiry-email"
+                                name="email"
                                 type="email"
                                 required
                                 placeholder="you@lab.org"
+                                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-900 text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-colors"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="inquiry-phone" className="block text-[10px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 sm:mb-1.5">
+                                Phone Number (Optional)
+                            </label>
+                            <input
+                                id="inquiry-phone"
+                                name="phone"
+                                type="tel"
+                                placeholder="+1 (555) 000-0000"
                                 className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-900 text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-colors"
                             />
                         </div>
@@ -99,6 +170,7 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose, product })
                             </label>
                             <textarea
                                 id="inquiry-message"
+                                name="message"
                                 rows={3}
                                 placeholder="Quantity, shipping, or questions..."
                                 className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-900 text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-colors resize-none"
@@ -106,9 +178,20 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose, product })
                         </div>
                         <button
                             type="submit"
-                            className="w-full py-4 bg-orange-500 text-white font-bold uppercase tracking-wider text-sm rounded-xl hover:bg-orange-600 transition-colors touch-manipulation min-h-[48px]"
+                            disabled={isSubmitting}
+                            aria-busy={isSubmitting}
+                            className={`w-full py-4 text-white font-bold uppercase tracking-wider text-sm rounded-xl transition-colors touch-manipulation min-h-[48px] flex items-center justify-center gap-2 ${isSubmitting
+                                ? 'bg-orange-400 cursor-not-allowed opacity-80'
+                                : 'bg-orange-500 hover:bg-orange-600'
+                                }`}
                         >
-                            Send inquiry
+                            {isSubmitting && (
+                                <span
+                                    className="inline-block w-4 h-4 border-2 border-white/60 border-t-transparent rounded-full animate-spin"
+                                    aria-hidden="true"
+                                />
+                            )}
+                            <span>{isSubmitting ? 'Sending…' : 'Send inquiry'}</span>
                         </button>
                     </form>
                 </div>
