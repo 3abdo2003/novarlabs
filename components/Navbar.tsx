@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white py-4 lg:py-6 px-6 lg:px-12 border-b border-gray-100 rounded-bl-[1.5rem] lg:rounded-bl-[2.5rem] rounded-br-[1.5rem] lg:rounded-br-[2.5rem] shadow-xl shadow-black/5">
       <div className="max-w-screen-2xl mx-auto flex items-center justify-between">
         <Link to="/" className="flex items-center">
-          <img src="/logo.png" alt="Novara Labs" className="h-12 lg:h-20 w-auto" />
+          <img src="/logo.png" alt="Novara Labs" className="h-16 lg:h-28 w-auto" />
         </Link>
 
         {/* Desktop Nav */}

@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Hero from '../components/Hero';
-import { ShieldCheck, Truck, Award, MessageCircle } from 'lucide-react';
+import { ShieldCheck, Handshake, Award, MessageCircle, FlaskConical, CheckCircle2 } from 'lucide-react';
 import { findPeptideByName } from '../products';
 
 const Home: React.FC = () => {
@@ -27,11 +27,11 @@ const Home: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
                         <div className="flex gap-6 text-left items-start group">
                             <div className="flex-shrink-0 w-20 h-20 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-colors duration-300 shadow-inner border border-orange-100">
-                                <Truck className="w-10 h-10" aria-hidden />
+                                <Handshake className="w-10 h-10" aria-hidden />
                             </div>
                             <div>
-                                <h2 className="text-xl sm:text-2xl font-black text-black uppercase tracking-tight mb-2">Free delivery</h2>
-                                <p className="text-gray-500 leading-relaxed font-medium">Any purchase of $200 or more qualifies for free delivery within the USA.</p>
+                                <h2 className="text-xl sm:text-2xl font-black text-black uppercase tracking-tight mb-2">Join Our Distribution Network</h2>
+                                <p className="text-gray-500 leading-relaxed font-medium">Work directly with us as an authorized distributor and access bulk pricing, priority inventory, and branding support.</p>
                             </div>
                         </div>
                         <div className="flex gap-6 text-left items-start group">
@@ -69,7 +69,7 @@ const Home: React.FC = () => {
                     <div className="flex flex-col lg:flex-row justify-between items-center lg:items-end mb-10 sm:mb-12 lg:mb-20 gap-6 sm:gap-8 text-center lg:text-left">
                         <div className="max-w-2xl">
                             <h2 className="text-3xl sm:text-4xl md:text-7xl font-black text-black uppercase tracking-tighter mb-4 sm:mb-6 lg:mb-8 leading-[0.9]">Featured<br />Research Compounds</h2>
-                            <p className="text-lg md:text-xl text-gray-500 font-medium">Premium grade peptides synthesized for high-impact laboratory validation.</p>
+                            <p className="text-lg md:text-xl text-gray-500 font-medium">Research-grade peptides with verified purity.</p>
                         </div>
                         <a
                             href="/peptides"
@@ -90,31 +90,32 @@ const Home: React.FC = () => {
                             const href = productData ? `/peptides/${productData.slug}` : '/peptides';
 
                             return (
-                            <div key={i} className="group bg-gray-50 p-6 lg:p-10 rounded-[2.5rem] lg:rounded-[4rem] border border-gray-100 hover:border-black/10 hover:shadow-2xl hover:bg-white transition-all duration-500 flex flex-col">
-                                <div className="aspect-square bg-white rounded-[1.5rem] lg:rounded-[2rem] mb-8 lg:mb-10 flex items-center justify-center overflow-hidden border border-gray-50 shadow-inner group-hover:scale-[1.05] transition-all relative p-0">
-                                    <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-transparent"></div>
-                                    <div className="absolute w-48 h-48 lg:w-64 lg:h-64 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                                    <img src={product.image} alt={product.name} className="relative z-10 w-full h-full object-contain scale-[1.4] lg:scale-[1.6]" />
-                                </div>
-                                <div className="flex-1 flex flex-col">
-                                    <div className="flex justify-between items-start mb-4">
-                                        <div>
-                                            <div className="text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase mb-1">{product.series}</div>
-                                            <h4 className="text-2xl font-black text-black uppercase tracking-tight">{product.name}</h4>
+                                <div key={i} className="group bg-gray-50 p-6 lg:p-10 rounded-[2.5rem] lg:rounded-[4rem] border border-gray-100 hover:border-black/10 hover:shadow-2xl hover:bg-white transition-all duration-500 flex flex-col">
+                                    <div className="aspect-square bg-white rounded-[1.5rem] lg:rounded-[2rem] mb-8 lg:mb-10 flex items-center justify-center overflow-hidden border border-gray-50 shadow-inner group-hover:scale-[1.05] transition-all relative p-0">
+                                        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-transparent"></div>
+                                        <div className="absolute w-48 h-48 lg:w-64 lg:h-64 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                                        <img src={product.image} alt={product.name} className="relative z-10 w-full h-full object-contain scale-[1.4] lg:scale-[1.6]" />
+                                    </div>
+                                    <div className="flex-1 flex flex-col">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <div>
+                                                <div className="text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase mb-1">{product.series}</div>
+                                                <h4 className="text-2xl font-black text-black uppercase tracking-tight">{product.name}</h4>
+                                            </div>
+                                            <span className="font-black text-black">{product.price}</span>
                                         </div>
-                                        <span className="font-black text-black">{product.price}</span>
-                                    </div>
-                                    <div className="mt-auto pt-6 border-t border-gray-100">
-                                        <Link
-                                            to={href}
-                                            className="block w-full py-4 bg-orange-500 text-white rounded-full font-black uppercase tracking-[0.15em] text-[10px] hover:bg-orange-600 transition-colors shadow-xl shadow-orange-500/5 text-center"
-                                        >
-                                            View product
-                                        </Link>
+                                        <div className="mt-auto pt-6 border-t border-gray-100">
+                                            <Link
+                                                to={href}
+                                                className="block w-full py-4 bg-orange-500 text-white rounded-full font-black uppercase tracking-[0.15em] text-[10px] hover:bg-orange-600 transition-colors shadow-xl shadow-orange-500/5 text-center"
+                                            >
+                                                View product
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        )})}
+                            )
+                        })}
                     </div>
                 </div>
             </motion.section>
@@ -127,11 +128,7 @@ const Home: React.FC = () => {
                 <div className="max-w-screen-2xl mx-auto flex flex-col items-center text-center relative z-10">
                     <h2 className="text-xs lg:text-sm font-black tracking-[0.4em] text-orange-500 uppercase mb-8 sm:mb-12 lg:mb-16 underline decoration-orange-500 decoration-2 underline-offset-8">The Novara Labs Mission</h2>
                     <p className="text-2xl sm:text-3xl md:text-6xl font-black text-white max-w-5xl leading-tight uppercase tracking-tighter px-2 sm:px-4 lg:px-0">
-                        We bridge the gap between <span className="text-white/40 italic">advanced chemical synthesis</span> and <span className="text-white/40 italic">breakthrough scientific research</span>.
-                    </p>
-                    <div className="mt-12 lg:mt-20 w-32 h-[1px] bg-white/20"></div>
-                    <p className="mt-12 lg:mt-20 text-gray-400 max-w-2xl text-base md:text-lg font-medium leading-relaxed">
-                        Novara Labs was founded on the principle of absolute pharmaceutical-grade precision. Our facilities prioritize data-backed purity profiles above all else, ensuring that your research is never compromised by inconsistent variables.
+                        We support <span className="text-white/40 italic">peak research performance</span> through <span className="text-white/40 italic">advanced peptide science</span>.
                     </p>
                 </div>
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] lg:w-[800px] h-[300px] lg:h-[800px] bg-white/[0.03] blur-[100px] lg:blur-[150px] rounded-full pointer-events-none"></div>
@@ -150,13 +147,24 @@ const Home: React.FC = () => {
                             <span className="text-gray-300 italic">Batch.</span>
                         </h2>
                         <p className="text-lg md:text-xl text-gray-500 font-medium leading-relaxed max-w-lg mx-auto lg:mx-0">
-                            Every Novara Labs product is cryptographically signed. Use our verification engine to ensure your research integrity remains uncompromised.
+                            Every product comes with a 12-digit code on the box. Scratch to verify authenticity.
                         </p>
                         <div className="flex items-center justify-center lg:justify-start space-x-6 lg:space-x-8">
                             <div className="flex -space-x-3">
-                                {[1, 2, 3, 4].map((i) => (
-                                    <div key={i} className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-gray-100 border-2 border-white flex items-center justify-center">
-                                        <div className="w-4 h-4 lg:w-5 lg:h-5 bg-gray-200 rounded-full"></div>
+                                {[
+                                    { icon: Award, color: 'bg-orange-500', label: 'ISO Certified' },
+                                    { icon: ShieldCheck, color: 'bg-zinc-900', label: 'cGMP Compliant' },
+                                    { icon: FlaskConical, color: 'bg-orange-600', label: 'Lab Tested' },
+                                    { icon: CheckCircle2, color: 'bg-zinc-800', label: 'Purity Verified' },
+                                ].map((badge, i) => (
+                                    <div
+                                        key={i}
+                                        className={`w-8 h-8 lg:w-10 lg:h-10 rounded-full ${badge.color} border-2 border-white flex items-center justify-center text-white shadow-lg relative group/badge`}
+                                    >
+                                        <badge.icon className="w-4 h-4 lg:w-5 lg:h-5" />
+                                        <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-[8px] px-2 py-1 rounded opacity-0 group-hover/badge:opacity-100 transition-opacity whitespace-nowrap pointer-events-none font-bold uppercase tracking-widest">
+                                            {badge.label}
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -199,16 +207,16 @@ const Home: React.FC = () => {
                 <div className="max-w-screen-2xl mx-auto bg-white rounded-2xl sm:rounded-[2.5rem] lg:rounded-[4rem] p-6 sm:p-10 lg:p-32 text-center text-black relative overflow-hidden group shadow-2xl shadow-white/5">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-black/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
                     <h2 className="text-2xl sm:text-3xl md:text-8xl font-black uppercase tracking-tighter mb-6 sm:mb-8 lg:mb-12 leading-none relative z-10 px-2 sm:px-4">
-                        Ready to Accelerate<br className="hidden md:block" />Your Research?
+                        Ready to Launch<br className="hidden md:block" />Your Peptide Brand?
                     </h2>
                     <p className="text-gray-500 mb-8 sm:mb-10 lg:mb-16 text-base sm:text-lg lg:text-xl max-w-xl mx-auto font-medium relative z-10 px-2">
-                        Contact our engineering and support team for bulk inquiries or custom synthesis requirements.
+                        Partner with us for bulk supply, private labeling, and exclusive distribution opportunities.
                     </p>
                     <a
                         href="/contact"
                         className="relative z-10 inline-block px-8 sm:px-10 lg:px-16 py-4 lg:py-6 bg-orange-500 text-white rounded-full font-black uppercase tracking-widest text-sm lg:text-lg hover:bg-orange-600 transition-colors shadow-2xl shadow-orange-500/20 min-h-[48px] flex items-center justify-center"
                     >
-                        Inquire Now
+                        Apply Now
                     </a>
                 </div>
             </motion.section>

@@ -27,9 +27,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-start gap-8 sm:gap-12">
             <div className="space-y-4">
               <div className="flex items-center space-x-4 cursor-pointer" onClick={() => window.location.href = '/'}>
-                <img src="/logo.png" alt="Novara Labs" className="h-24 w-auto invert brightness-0" />
+                <img src="/logo.png" alt="Novara Labs" className="h-32 w-auto invert brightness-0" />
               </div>
-              <p className="text-white/40 max-w-xs text-sm">Providing industry-leading research compounds with transparency and precision.</p>
+              <p className="text-white/40 max-w-xs text-sm">Providing industry-leading research compounds with quality and precision.</p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-8 sm:gap-12">
               <div className="space-y-4">
@@ -56,8 +56,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             </div>
           </div>
           <div className="max-w-screen-2xl mx-auto mt-12 sm:mt-20 pt-6 sm:pt-8 border-t border-white/10 text-[10px] font-bold text-white/30 uppercase tracking-[0.3em] flex flex-col sm:flex-row justify-between items-center gap-2 text-center sm:text-left">
-            <span>© 2024 Novara Labs Research Group</span>
-            <span>USA Laboratories Only</span>
+            <span>© 2026 Novara Labs Research Group</span>
+            <span>Europe Based Lab</span>
           </div>
         </footer>
       )}
