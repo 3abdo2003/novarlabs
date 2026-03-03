@@ -100,12 +100,12 @@ const Peptides: React.FC = () => {
                                         cartItem ? (
                                             <QuantitySelector
                                                 quantity={cartItem.quantity}
-                                                onIncrease={() => setQuantity(product.slug, cartItem.quantity + 1)}
+                                                onIncrease={() => setQuantity(product.slug, cartItem.quantity + 1, cartItem.selectedSize)}
                                                 onDecrease={() => {
                                                     if (cartItem.quantity > 1) {
-                                                        setQuantity(product.slug, cartItem.quantity - 1);
+                                                        setQuantity(product.slug, cartItem.quantity - 1, cartItem.selectedSize);
                                                     } else {
-                                                        removeItem(product.slug);
+                                                        removeItem(product.slug, cartItem.selectedSize);
                                                     }
                                                 }}
                                                 className="w-full"

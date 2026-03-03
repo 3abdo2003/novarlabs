@@ -94,12 +94,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [openCart]);
 
   const removeItem = useCallback((slug: string, size?: string) => {
-    setItems((prev) => prev.filter((i) => !(i.product.slug === slug && i.selectedSize === size)));
+    setItems((prev) => prev.filter((i) => !(i.product.slug === slug && (i.selectedSize || '') === (size || ''))));
   }, []);
 
   const setQuantity = useCallback((slug: string, quantity: number, size?: string) => {
     const qty = clampInt(quantity, 1, 99);
-    setItems((prev) => prev.map((i) => (i.product.slug === slug && i.selectedSize === size ? { ...i, quantity: qty } : i)));
+    setItems((prev) => prev.map((i) => (i.product.slug === slug && (i.selectedSize || '') === (size || '') ? { ...i, quantity: qty } : i)));
   }, []);
 
   const updateItemSize = useCallback((slug: string, oldSize: string, newSize: string, newPrice: string) => {

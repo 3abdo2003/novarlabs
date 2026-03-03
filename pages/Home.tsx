@@ -156,30 +156,24 @@ const Home: React.FC = () => {
                         <div className="flex items-center justify-center lg:justify-start space-x-6 lg:space-x-8">
                             <div className="flex -space-x-3">
                                 {[
-                                    { icon: FlaskConical, color: 'bg-orange-600', label: 'Lab Tested' },
-                                    { icon: CheckCircle2, color: 'bg-zinc-800', label: 'Purity Verified' },
                                     { image: '/eu_ce.png', color: 'bg-white', label: 'EU CE Certified', scale: 'scale-[1.3]' },
-                                    { image: '/IsoCert.png', color: 'bg-white', label: 'ISO 9001:2015', scale: 'scale-[1.3]' },
-                                    { image: '/cgmp-GOL.png', color: 'bg-white', label: 'cGMP Certified', scale: 'scale-[1.6]' },
+                                    { image: '/IsoCert.png', color: 'bg-white', label: 'ISO 9001:2015', scale: 'scale-[1.5]' },
+                                    { image: '/cgmp-GOL.png', color: 'bg-white', label: 'cGMP Certified', scale: 'scale-[2.6]' },
                                 ].map((badge, i) => (
                                     <div
                                         key={i}
                                         className={`w-9 h-9 lg:w-11 lg:h-11 rounded-full ${badge.color} border-2 border-white flex items-center justify-center text-white shadow-lg relative overflow-hidden`}
                                         title={badge.label}
                                     >
-                                        {'icon' in badge ? (
-                                            <badge.icon className="w-5 h-5 lg:w-6 lg:h-6" />
-                                        ) : (
-                                            <img
-                                                src={badge.image}
-                                                alt={badge.label}
-                                                className={`w-full h-full object-contain ${badge.scale || 'scale-100'}`}
-                                            />
-                                        )}
+                                        <img
+                                            src={badge.image}
+                                            alt={badge.label}
+                                            className={`w-full h-full object-contain ${badge.scale || 'scale-100'}`}
+                                        />
                                     </div>
                                 ))}
                             </div>
-                            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Checked by 12,000+ researchers</p>
+                            <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Quality verified by international standards</p>
                         </div>
                     </div>
                     <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6 sm:p-8 md:p-16 shadow-2xl shadow-gray-200/50">
@@ -189,14 +183,6 @@ const Home: React.FC = () => {
                             </div>
                             <div className="text-center">
                                 <h3 className="text-xl lg:text-2xl font-black text-black uppercase tracking-tight mb-4">Quick Validation</h3>
-                                <p className="text-gray-400 text-sm font-medium">Enter your 12-digit product code below.</p>
-                            </div>
-                            <div className="relative">
-                                <input
-                                    type="text"
-                                    placeholder="NOV-XXXX-XXXX"
-                                    className="w-full bg-white border border-gray-100 rounded-xl px-6 lg:px-8 py-4 lg:py-5 text-base lg:text-lg font-mono tracking-[0.2em] lg:tracking-[0.3em] text-center text-black focus:outline-none focus:border-orange-500 transition-all uppercase placeholder:text-gray-200"
-                                />
                             </div>
                             <button
                                 onClick={() => window.location.href = '/validate'}
