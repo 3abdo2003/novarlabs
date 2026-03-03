@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { MessageProvider } from './context/MessageContext';
+import { RegionProvider } from './context/RegionContext';
+import { CartProvider } from './context/CartContext';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Peptides from './pages/Peptides';
@@ -9,6 +11,9 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import ProductValidation from './pages/ProductValidation';
 import UnderConstruction from './pages/UnderConstruction';
+import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
+import CartSidebar from './components/CartSidebar';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
@@ -21,6 +26,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <main>
         {children}
       </main>
+      <CartSidebar />
 
       {!hideChrome && (
         <footer className="bg-zinc-950 text-white py-12 sm:py-20 px-6 sm:px-12 mt-12 sm:mt-20">
@@ -69,17 +75,23 @@ const App: React.FC = () => {
   return (
     <Router>
       <MessageProvider>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<UnderConstruction />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/peptides" element={<Peptides />} />
-            <Route path="/peptides/:slug" element={<PeptideDetail />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/validate" element={<ProductValidation />} />
-          </Routes>
-        </Layout>
+        <RegionProvider>
+          <CartProvider>
+            <Layout>
+              <Routes>
+                <Route path="/" element={<UnderConstruction />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/peptides" element={<Peptides />} />
+                <Route path="/peptides/:slug" element={<PeptideDetail />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/validate" element={<ProductValidation />} />
+              </Routes>
+            </Layout>
+          </CartProvider>
+        </RegionProvider>
       </MessageProvider>
     </Router>
   );

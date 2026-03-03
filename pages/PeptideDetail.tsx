@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import InquiryModal from '../components/InquiryModal';
+import { useRegion } from '../context/RegionContext';
+import { useCart } from '../context/CartContext';
+import { useMessage } from '../context/MessageContext';
 import { findPeptideBySlug, peptides, type Product } from '../products';
+import QuantitySelector from '../components/QuantitySelector';
 
 const PeptideDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { region } = useRegion();
+  const { addItem, items, setQuantity, removeItem } = useCart();
 
   useEffect(() => {
     if (!slug) return;
@@ -22,6 +28,8 @@ const PeptideDetail: React.FC = () => {
   if (!product) {
     return null;
   }
+
+  const cartItem = items.find((i) => i.product.slug === product.slug);
 
   const relatedProducts = (() => {
     const sameSeries = peptides.filter(
@@ -93,46 +101,83 @@ const PeptideDetail: React.FC = () => {
             </div>
 
             <div className="pt-4 border-t border-gray-100">
-              <h3 className="text-xs font-black tracking-[0.25em] text-gray-400 uppercase mb-3">
-                Send Inquiry
-              </h3>
-              <p className="text-sm text-gray-500 mb-4">
-                Provide your lab details, desired quantity, and any protocol considerations. Our team
-                will respond within 24 hours with availability and documentation.
-              </p>
-              <button
-                type="button"
-                onClick={() => setIsModalOpen(true)}
-                className="w-full sm:w-auto px-10 lg:px-12 py-4 lg:py-5 bg-orange-500 text-white rounded-full font-black uppercase tracking-[0.18em] text-[10px] sm:text-xs hover:bg-orange-600 transition-colors shadow-xl shadow-orange-500/10"
-              >
-                Send Inquiry
-              </button>
+              {region === 'EG' ? (
+                <>
+                  <h3 className="text-xs font-black tracking-[0.25em] text-gray-400 uppercase mb-3 text-orange-500">
+                    Egypt Checkout
+                  </h3>
+                  <p className="text-sm text-gray-500 mb-6 max-w-sm">
+                    Add this item to your cart, then checkout with Instapay or Cash on Delivery.
+                  </p>
+
+                  {cartItem ? (
+                    <div className="w-full sm:w-64">
+                      <QuantitySelector
+                        quantity={cartItem.quantity}
+                        onIncrease={() => setQuantity(product.slug, cartItem.quantity + 1)}
+                        onDecrease={() => {
+                          if (cartItem.quantity > 1) {
+                            setQuantity(product.slug, cartItem.quantity - 1);
+                          } else {
+                            removeItem(product.slug);
+                          }
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        addItem(product, 1);
+                      }}
+                      className="w-full sm:w-auto px-10 lg:px-12 py-4 lg:py-5 bg-orange-500 text-white rounded-full font-black uppercase tracking-[0.18em] text-[10px] sm:text-xs hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/10 hover:shadow-orange-500/30"
+                    >
+                      Add to cart
+                    </button>
+                  )}
+                </>
+              ) : (
+                <>
+                  <h3 className="text-xs font-black tracking-[0.25em] text-gray-400 uppercase mb-3">
+                    Send Inquiry
+                  </h3>
+                  <p className="text-sm text-gray-500 mb-6 max-w-sm">
+                    Provide your lab details, desired quantity, and any protocol considerations.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setIsModalOpen(true)}
+                    className="w-full sm:w-auto px-10 lg:px-12 py-4 lg:py-5 bg-zinc-900 text-white rounded-full font-black uppercase tracking-[0.18em] text-[10px] sm:text-xs hover:bg-black transition-all shadow-xl shadow-black/10"
+                  >
+                    Send Inquiry
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
 
         {relatedProducts.length > 0 && (
-          <section className="mt-16 lg:mt-20 border-t border-gray-100 pt-10 lg:pt-12">
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4 mb-8">
+          <section className="mt-16 lg:mt-24 border-t border-gray-100 pt-16 lg:pt-20">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4 mb-10">
               <div>
-                <h2 className="text-xs font-black tracking-[0.3em] text-gray-400 uppercase mb-2">
+                <h2 className="text-xs font-black tracking-[0.3em] text-gray-400 uppercase mb-3">
                   Related Products
                 </h2>
                 <p className="text-sm sm:text-base text-gray-500 max-w-xl">
-                  Explore additional compounds that complement this peptide in growth, metabolic, or
-                  repair-focused research protocols.
+                  Explore additional compounds that complement this peptide in research protocols.
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
               {relatedProducts.map((rp) => (
                 <div
                   key={rp.slug}
-                  className="group bg-gray-50 p-4 sm:p-6 rounded-2xl lg:rounded-3xl border border-gray-100 hover:border-black/10 hover:bg-white hover:shadow-xl transition-all duration-300 flex flex-col"
+                  className="group bg-gray-50 p-4 sm:p-6 rounded-3xl lg:rounded-[2.5rem] border border-gray-100 hover:border-black/5 hover:bg-white hover:shadow-2xl transition-all duration-500 flex flex-col"
                 >
                   <Link to={`/peptides/${rp.slug}`} className="flex-1 flex flex-col">
-                    <div className="aspect-square bg-white rounded-xl lg:rounded-2xl mb-4 flex items-center justify-center overflow-hidden border border-gray-50 shadow-inner relative">
+                    <div className="aspect-square bg-white rounded-2xl lg:rounded-[1.5rem] mb-6 flex items-center justify-center overflow-hidden border border-gray-50 shadow-inner relative group-hover:scale-[1.03] transition-all">
                       <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-transparent" />
                       <img
                         src={rp.image}
@@ -140,15 +185,15 @@ const PeptideDetail: React.FC = () => {
                         className="relative z-10 w-full h-full object-contain scale-[1.3]"
                       />
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       <div className="text-[9px] font-black tracking-[0.2em] text-gray-400 uppercase">
                         {rp.series}
                       </div>
                       <div className="flex items-baseline justify-between gap-3">
-                        <h3 className="text-lg font-black text-black uppercase tracking-tight">
+                        <h3 className="text-xl font-black text-black uppercase tracking-tight">
                           {rp.name}
                         </h3>
-                        <span className="text-sm font-black text-black whitespace-nowrap">
+                        <span className="text-base font-black text-black whitespace-nowrap">
                           {rp.price}
                         </span>
                       </div>
@@ -171,4 +216,3 @@ const PeptideDetail: React.FC = () => {
 };
 
 export default PeptideDetail;
-

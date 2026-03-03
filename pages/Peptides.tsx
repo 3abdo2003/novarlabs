@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import InquiryModal from '../components/InquiryModal';
+import { useRegion } from '../context/RegionContext';
+import { useCart } from '../context/CartContext';
+import { useMessage } from '../context/MessageContext';
 import { peptides, findPeptideByName, type Product } from '../products';
+import QuantitySelector from '../components/QuantitySelector';
 
 const Peptides: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { region } = useRegion();
+    const { addItem, items, setQuantity, removeItem } = useCart();
+    const { showMessage } = useMessage();
 
     const handleInquiry = (product: Product) => {
         setSelectedProduct(product);
@@ -50,42 +57,72 @@ const Peptides: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-                    {peptides.map((product) => (
-                        <div
-                            key={product.slug}
-                            className="group bg-gray-50 p-4 sm:p-6 lg:p-10 rounded-2xl sm:rounded-[2.5rem] lg:rounded-[4rem] border border-gray-100 hover:border-black/10 hover:shadow-2xl hover:bg-white transition-all duration-500 flex flex-col"
-                        >
-                            <Link
-                                to={`/peptides/${product.slug}`}
-                                className="flex-1 flex flex-col"
+                    {peptides.map((product) => {
+                        const cartItem = items.find(i => i.product.slug === product.slug);
+
+                        return (
+                            <div
+                                key={product.slug}
+                                className="group bg-gray-50 p-4 sm:p-6 lg:p-10 rounded-2xl sm:rounded-[2.5rem] lg:rounded-[4rem] border border-gray-100 hover:border-black/10 hover:shadow-2xl hover:bg-white transition-all duration-500 flex flex-col"
                             >
-                                <div className="aspect-square bg-white rounded-[1.5rem] lg:rounded-[2rem] mb-8 lg:mb-10 flex items-center justify-center overflow-hidden border border-gray-50 shadow-inner group-hover:scale-[1.05] transition-all relative p-0">
-                                    <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-transparent"></div>
-                                    <div className="absolute w-48 h-48 lg:w-64 lg:h-64 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
-                                    <img src={product.image} alt={product.name} className="relative z-10 w-full h-full object-contain scale-[1.4] lg:scale-[1.6]" />
-                                </div>
-
-                                <div className="space-y-4">
-                                    <div className="flex justify-between items-start">
-                                        <div>
-                                            <div className="text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase mb-1">{product.series}</div>
-                                            <h4 className="text-2xl font-black text-black uppercase tracking-tight">{product.name}</h4>
-                                        </div>
-                                        <span className="font-black text-black">{product.price}</span>
-                                    </div>
-                                </div>
-                            </Link>
-
-                            <div className="mt-auto pt-6 border-t border-gray-100">
-                                <button
-                                    onClick={() => handleInquiry(product)}
-                                    className="w-full py-4 bg-orange-500 text-white rounded-full font-black uppercase tracking-[0.15em] text-[10px] hover:bg-orange-600 transition-colors shadow-xl shadow-orange-500/5"
+                                <Link
+                                    to={`/peptides/${product.slug}`}
+                                    className="flex-1 flex flex-col"
                                 >
-                                    Send Inquiry
-                                </button>
+                                    <div className="aspect-square bg-white rounded-[1.5rem] lg:rounded-[2rem] mb-8 lg:mb-10 flex items-center justify-center overflow-hidden border border-gray-50 shadow-inner group-hover:scale-[1.03] transition-all relative p-0">
+                                        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-transparent"></div>
+                                        <div className="absolute w-48 h-48 lg:w-64 lg:h-64 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                                        <img src={product.image} alt={product.name} className="relative z-10 w-full h-full object-contain scale-[1.4] lg:scale-[1.6]" />
+                                    </div>
+
+                                    <div className="space-y-4">
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <div className="text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase mb-1">{product.series}</div>
+                                                <h4 className="text-2xl font-black text-black uppercase tracking-tight">{product.name}</h4>
+                                            </div>
+                                            <span className="font-black text-black">{product.price}</span>
+                                        </div>
+                                    </div>
+                                </Link>
+
+                                <div className="mt-auto pt-6 border-t border-gray-100">
+                                    {region === 'EG' ? (
+                                        cartItem ? (
+                                            <QuantitySelector
+                                                quantity={cartItem.quantity}
+                                                onIncrease={() => setQuantity(product.slug, cartItem.quantity + 1)}
+                                                onDecrease={() => {
+                                                    if (cartItem.quantity > 1) {
+                                                        setQuantity(product.slug, cartItem.quantity - 1);
+                                                    } else {
+                                                        removeItem(product.slug);
+                                                    }
+                                                }}
+                                                className="w-full"
+                                            />
+                                        ) : (
+                                            <button
+                                                onClick={() => {
+                                                    addItem(product, 1);
+                                                }}
+                                                className="w-full py-4 bg-orange-500 text-white rounded-full font-black uppercase tracking-[0.15em] text-[10px] hover:bg-orange-600 hover:shadow-orange-500/40 transition-all shadow-xl shadow-orange-500/10"
+                                            >
+                                                Add to cart
+                                            </button>
+                                        )
+                                    ) : (
+                                        <button
+                                            onClick={() => handleInquiry(product)}
+                                            className="w-full py-4 bg-zinc-900 text-white rounded-full font-black uppercase tracking-[0.15em] text-[10px] hover:bg-black transition-all shadow-xl shadow-black/10"
+                                        >
+                                            Send Inquiry
+                                        </button>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
 
@@ -102,7 +139,7 @@ const Peptides: React.FC = () => {
                         </p>
                         <a
                             href="/validate"
-                            className="inline-block bg-orange-500 text-white px-10 lg:px-12 py-4 lg:py-5 rounded-full font-black uppercase tracking-widest text-xs md:text-sm hover:bg-orange-600 transition-colors"
+                            className="inline-block bg-orange-500 text-white px-10 lg:px-12 py-4 lg:py-5 rounded-full font-black uppercase tracking-widest text-xs md:text-sm hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/20"
                         >
                             Validate Now
                         </a>

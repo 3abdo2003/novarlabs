@@ -27,7 +27,7 @@ const Hero: React.FC = () => {
           </h1>
 
           <p className="text-gray-600 text-base md:text-lg max-w-xl mb-8 leading-relaxed mx-auto lg:mx-0">
-            Premium research compounds engineered for peak performance and precision.
+            Premium research compounds engineered for peak performance and precision with European Quality standards.
           </p>
 
           <a href="/peptides" className="inline-block px-10 md:px-12 py-4 md:py-5 bg-orange-500 rounded-pill text-white text-xs md:text-sm font-black tracking-widest uppercase hover:bg-orange-600 transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_40px_rgba(249,115,22,0.3)]">
