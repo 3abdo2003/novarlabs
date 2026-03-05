@@ -12,7 +12,7 @@ const RegionContext = createContext<RegionContextValue | null>(null);
 const STORAGE_KEY = 'novara_region';
 
 export const RegionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [region, setRegionState] = useState<Region>('EG');
+  const [region, setRegionState] = useState<Region>('WORLDWIDE');
 
   useEffect(() => {
     try {
