@@ -16,18 +16,18 @@ export default async function handler(req, res) {
   const payment = body.payment || {};
   const items = Array.isArray(body.items) ? body.items : [];
 
-  const name = safeStr(customer.name);
-  const email = safeStr(customer.email);
-  const phone = safeStr(customer.phone);
+  const name = safeStr(customer.name).substring(0, 100);
+  const email = safeStr(customer.email).substring(0, 100);
+  const phone = safeStr(customer.phone).substring(0, 50);
 
-  const address1 = safeStr(shipping.address1);
-  const address2 = safeStr(shipping.address2);
-  const city = safeStr(shipping.city);
-  const governorate = safeStr(shipping.governorate);
+  const address1 = safeStr(shipping.address1).substring(0, 250);
+  const address2 = safeStr(shipping.address2).substring(0, 250);
+  const city = safeStr(shipping.city).substring(0, 100);
+  const governorate = safeStr(shipping.governorate).substring(0, 100);
 
   const paymentMethod = safeStr(payment.method);
-  const instapayHandle = safeStr(payment.instapayHandle);
-  const notes = safeStr(body.notes);
+  const instapayHandle = safeStr(payment.instapayHandle).substring(0, 100);
+  const notes = safeStr(body.notes).substring(0, 1000);
 
   if (region !== 'EG') {
     return res.status(400).json({ success: false, error: 'Orders are enabled for Egypt only' });

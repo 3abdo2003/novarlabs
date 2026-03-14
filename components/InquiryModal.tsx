@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { useMessage } from '../context/MessageContext';
+import { useRegion } from '../context/RegionContext';
 import type { Product } from '../products';
 import FormattedText from './FormattedText';
 
@@ -12,6 +13,7 @@ interface InquiryModalProps {
 
 const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose, product }) => {
     const { showMessage } = useMessage();
+    const { region } = useRegion();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     if (!isOpen || !product) return null;
@@ -40,6 +42,7 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose, product })
 
         try {
             setIsSubmitting(true);
+            const displayPrice = region === 'EG' ? product.priceEG : product.priceWorldwide;
             const response = await fetch('/api/send-inquiry', {
                 method: 'POST',
                 headers: {
@@ -54,7 +57,7 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose, product })
                         name: product.name,
                         slug: product.slug,
                         series: product.series,
-                        price: product.price,
+                        price: displayPrice,
                     },
                 }),
             });
@@ -118,7 +121,7 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose, product })
                                 <h2 id="inquiry-title" className="text-lg sm:text-xl font-bold text-black uppercase tracking-tight mt-0.5 break-words">
                                     {product.name}
                                 </h2>
-                                <p className="text-xs sm:text-sm font-medium text-gray-600 mt-1">{product.price}</p>
+                                <p className="text-xs sm:text-sm font-medium text-gray-600 mt-1">{region === 'EG' ? product.priceEG : product.priceWorldwide}</p>
                             </div>
                         </div>
                         <FormattedText

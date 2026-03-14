@@ -188,6 +188,7 @@ const Checkout: React.FC = () => {
                     name="name"
                     type="text"
                     required
+                    maxLength={100}
                     className="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3.5 text-sm font-medium focus:outline-none focus:border-orange-500/50 transition-all placeholder:text-gray-300"
                     placeholder="Name"
                   />
@@ -198,6 +199,7 @@ const Checkout: React.FC = () => {
                     name="email"
                     type="email"
                     required
+                    maxLength={100}
                     className="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3.5 text-sm font-medium focus:outline-none focus:border-orange-500/50 transition-all placeholder:text-gray-300"
                     placeholder="email@example.com"
                   />
@@ -208,6 +210,7 @@ const Checkout: React.FC = () => {
                     name="phone"
                     type="tel"
                     required
+                    maxLength={50}
                     className="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3.5 text-sm font-medium focus:outline-none focus:border-orange-500/50 transition-all placeholder:text-gray-300"
                     placeholder="+20 1X XXX XXXX"
                   />
@@ -230,6 +233,7 @@ const Checkout: React.FC = () => {
                     name="address1"
                     type="text"
                     required
+                    maxLength={250}
                     className="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3.5 text-sm font-medium focus:outline-none focus:border-orange-500/50 transition-all placeholder:text-gray-300"
                     placeholder="Street, Building, Flat"
                   />
@@ -239,6 +243,7 @@ const Checkout: React.FC = () => {
                   <input
                     name="address2"
                     type="text"
+                    maxLength={250}
                     className="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3.5 text-sm font-medium focus:outline-none focus:border-orange-500/50 transition-all placeholder:text-gray-300"
                     placeholder="Landmark, Floor"
                   />
@@ -250,6 +255,7 @@ const Checkout: React.FC = () => {
                       name="city"
                       type="text"
                       required
+                      maxLength={100}
                       className="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3.5 text-sm font-medium focus:outline-none focus:border-orange-500/50 transition-all placeholder:text-gray-300"
                       placeholder="e.g. Nasr City"
                     />
@@ -260,6 +266,7 @@ const Checkout: React.FC = () => {
                       name="governorate"
                       type="text"
                       required
+                      maxLength={100}
                       className="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3.5 text-sm font-medium focus:outline-none focus:border-orange-500/50 transition-all placeholder:text-gray-300"
                       placeholder="e.g. Cairo"
                     />
@@ -270,6 +277,7 @@ const Checkout: React.FC = () => {
                   <textarea
                     name="notes"
                     rows={3}
+                    maxLength={1000}
                     className="w-full bg-gray-50 border border-gray-100 rounded-xl px-5 py-3.5 text-sm font-medium focus:outline-none focus:border-orange-500/50 transition-all resize-none placeholder:text-gray-300"
                     placeholder="Any special instructions for delivery..."
                   />
