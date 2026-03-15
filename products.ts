@@ -111,7 +111,7 @@ export const peptides: Product[] = [
     slug: 'slu-pp-332',
     name: 'SLU-PP-332',
     series: 'RESEARCH',
-    priceEG: '4000 L.E',
+    priceEG: '4,000 L.E',
     priceWorldwide: '€78.00',
     image: '/SLU-PP-332-removebg-preview.png',
     size: '5 mg / vial',
