@@ -4,6 +4,18 @@ function safeStr(x) {
   return typeof x === 'string' ? x.trim() : '';
 }
 
+function parsePrice(value) {
+  if (!value) return 0;
+  // Remove commas, L.E, €, and whitespace
+  const clean = value.replace(/,/g, '').replace(/L\.E/gi, '').replace(/€/gi, '').replace(/\s/g, '');
+  const n = parseFloat(clean);
+  return isFinite(n) ? n : 0;
+}
+
+function formatPrice(n) {
+  return n.toLocaleString('en-US') + ' L.E';
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, error: 'Method not allowed' });
@@ -50,14 +62,22 @@ export default async function handler(req, res) {
   }
 
   const normalizedItems = items
-    .map((i) => ({
-      slug: safeStr(i.slug),
-      name: safeStr(i.name),
-      series: safeStr(i.series),
-      price: safeStr(i.price),
-      quantity: Number.isFinite(Number(i.quantity)) ? Math.max(1, Math.min(99, Math.round(Number(i.quantity)))) : 1,
-    }))
+    .map((i) => {
+      const quantity = Number.isFinite(Number(i.quantity)) ? Math.max(1, Math.min(99, Math.round(Number(i.quantity)))) : 1;
+      const unitPrice = parsePrice(i.price);
+      return {
+        slug: safeStr(i.slug),
+        name: safeStr(i.name),
+        series: safeStr(i.series),
+        price: safeStr(i.price), // Keep original string for display if needed
+        unitPrice,
+        quantity,
+        subtotal: unitPrice * quantity,
+      };
+    })
     .filter((i) => i.slug && i.name);
+
+  const grandTotal = normalizedItems.reduce((sum, i) => sum + i.subtotal, 0);
 
   if (normalizedItems.length === 0) {
     return res.status(400).json({ success: false, error: 'Invalid items' });
@@ -92,7 +112,9 @@ export default async function handler(req, res) {
 
   const orderId = `EG-${Date.now().toString(36).toUpperCase()}`;
 
-  const itemLines = normalizedItems.map((i) => `- ${i.name} (${i.series}) x${i.quantity} — ${i.price}`).join('\n');
+  const itemLines = normalizedItems.map((i) => 
+    `- ${i.name} (${i.series}): ${formatPrice(i.unitPrice)} x ${i.quantity} = ${formatPrice(i.subtotal)}`
+  ).join('\n') + `\n\nGRAND TOTAL: ${formatPrice(grandTotal)}`;
   const shippingLines = [
     address1,
     address2 ? address2 : '',
@@ -130,10 +152,17 @@ export default async function handler(req, res) {
 
   const itemsHtml = normalizedItems.map(i => `
     <div class="item-row">
-        <span><span class="item-name">${i.name}</span> (${i.series}) x${i.quantity}</span>
-        <span>${i.price}</span>
+        <span><span class="item-name">${i.name}</span> (${i.series})</span>
+        <span>${formatPrice(i.unitPrice)} x ${i.quantity} = <strong>${formatPrice(i.subtotal)}</strong></span>
     </div>
   `).join('');
+
+  const totalHtml = `
+    <div style="margin-top: 16px; padding-top: 16px; border-top: 2px solid #eee; display: flex; justify-content: space-between; font-size: 18px; font-weight: 900;">
+        <span>GRAND TOTAL</span>
+        <span>${formatPrice(grandTotal)}</span>
+    </div>
+  `;
 
   const supportHtml = `
   <!DOCTYPE html>
@@ -161,6 +190,7 @@ export default async function handler(req, res) {
           <div class="section">
               <div class="section-title">Items</div>
               ${itemsHtml}
+              ${totalHtml}
           </div>
           ${notes ? `<div class="section"><div class="section-title">Notes</div><div style="font-size: 14px;">${notes}</div></div>` : ''}
           <div class="footer">&copy; Novara Labs. Middle East Distribution.</div>
@@ -183,6 +213,7 @@ export default async function handler(req, res) {
           <div class="section">
               <div class="section-title">Order Summary (${orderId})</div>
               ${itemsHtml}
+              ${totalHtml}
           </div>
 
           <div class="section">
