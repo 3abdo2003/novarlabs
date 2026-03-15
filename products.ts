@@ -51,9 +51,9 @@ export const peptides: Product[] = [
     slug: 'retatrutide',
     name: 'RETATRUTIDE',
     series: 'METABOLIC',
-    priceEG: '4,500 L.E',
+    priceEG: '5,000 L.E',
     sizesEG: [
-      { size: '10 mg / vial', price: '4,500L.E' },
+      { size: '10 mg / vial', price: '5,000L.E' },
       { size: '20 mg / vial', price: '9,000L.E' },
     ],
     priceWorldwide: '€95.00',
