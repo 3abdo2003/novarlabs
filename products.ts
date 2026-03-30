@@ -120,6 +120,19 @@ export const peptides: Product[] = [
     description:
       'SLU‑PP‑332 is a synthetic research peptide employed as a probe in metabolic studies, specifically acting as an "exercise mimetic" by activating ERR pathways.\n\nKEY RESEARCH BENEFITS:\n• Advanced Exercise Mimetic Signaling\n• Boosts Mitochondrial Biogenesis\n• Enhances Aerobic Endurance\n• Improves Nutrient Partitioning\n• Supports Whole-Body Energy Homeostasis\n\nFor research purposes only. Not for human consumption.',
   },
+  {
+    slug: 'tesamorelin',
+    name: 'TESAMORELIN',
+    series: 'GROWTH',
+    priceEG: '9,000 L.E',
+    priceWorldwide: '€145.00',
+    image: '/TESAMORELIN.png',
+    size: '10 mg / vial',
+    shortDescription:
+      'TESAMORELIN is a Growth Hormone Stimulator that promotes natural growth hormone release, fat loss, and improved body composition.',
+    description:
+      'TESAMORELIN is a Growth Hormone Stimulator.\n\nKEY RESEARCH BENEFITS:\n• Reduces Visceral Belly Fat\n• Increases Natural Growth Hormone Release\n• Improves Fat Loss Without Muscle Loss\n• Tightens Midsection & Improves Body Composition\n• Enhances Recovery & Sleep Quality\n\nFor research purposes only. Not for human consumption.',
+  },
 ];
 
 export const findPeptideBySlug = (slug: string): Product | undefined =>
