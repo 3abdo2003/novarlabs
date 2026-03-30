@@ -131,7 +131,7 @@ export const peptides: Product[] = [
     shortDescription:
       'TESAMORELIN is a Growth Hormone Stimulator that promotes natural growth hormone release, fat loss, and improved body composition.',
     description:
-      'TESAMORELIN is a Growth Hormone Stimulator.\n\nKEY RESEARCH BENEFITS:\n• Reduces Visceral Belly Fat\n• Increases Natural Growth Hormone Release\n• Improves Fat Loss Without Muscle Loss\n• Tightens Midsection & Improves Body Composition\n• Enhances Recovery & Sleep Quality\n\nFor research purposes only. Not for human consumption.',
+      'TESAMORELIN is a synthetic peptide analog of growth hormone–releasing hormone (GHRH), studied for its ability to stimulate endogenous growth hormone secretion and modulate metabolic processes related to fat distribution and body composition.\n\nKEY RESEARCH BENEFITS:\n• Reduces Visceral Belly Fat\n• Increases Natural Growth Hormone Release\n• Improves Fat Loss Without Muscle Loss\n• Tightens Midsection & Improves Body Composition\n• Enhances Recovery & Sleep Quality\n\nFor research purposes only. Not for human consumption.',
   },
 ];
 
