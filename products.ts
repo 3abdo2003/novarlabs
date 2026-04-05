@@ -9,6 +9,7 @@ export interface Product {
   description: string;
   size: string;
   sizesEG?: { size: string; price: string }[];
+  sizesWorldwide?: { size: string; price: string }[];
 }
 
 export function parsePrice(value: string | undefined | null): number | null {
@@ -57,6 +58,10 @@ export const peptides: Product[] = [
       { size: '20 mg / vial', price: '9,500 L.E' },
     ],
     priceWorldwide: '€95.00',
+    sizesWorldwide: [
+      { size: '10 mg / vial', price: '€95.00' },
+      { size: '20 mg / vial', price: '€197.00' },
+    ],
     image: '/RETATRUTIDE-removebg-preview.png',
     size: '10 mg / vial',
     shortDescription:
@@ -100,6 +105,10 @@ export const peptides: Product[] = [
       { size: '100 mg / vial', price: '7,000L.E' },
     ],
     priceWorldwide: '€85.00',
+    sizesWorldwide: [
+      { size: '50 mg / vial', price: '€85.00' },
+      { size: '100 mg / vial', price: '€130.00' },
+    ],
     image: '/GHK-CU-removebg-preview.png',
     size: '50 mg / vial',
     shortDescription:

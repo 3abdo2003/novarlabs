@@ -9,9 +9,11 @@ interface InquiryModalProps {
     isOpen: boolean;
     onClose: () => void;
     product: Product | null;
+    selectedSize?: string;
+    selectedPrice?: string;
 }
 
-const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose, product }) => {
+const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose, product, selectedSize, selectedPrice }) => {
     const { showMessage } = useMessage();
     const { region } = useRegion();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,7 +44,8 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose, product })
 
         try {
             setIsSubmitting(true);
-            const displayPrice = region === 'EG' ? product.priceEG : product.priceWorldwide;
+            const displayPrice = selectedPrice || (region === 'EG' ? product.priceEG : product.priceWorldwide);
+            const displayProduct = selectedSize ? `${product.name} (${selectedSize})` : product.name;
             const response = await fetch('/api/send-inquiry', {
                 method: 'POST',
                 headers: {
@@ -54,7 +57,7 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose, product })
                     phone,
                     message,
                     product: {
-                        name: product.name,
+                        name: displayProduct,
                         slug: product.slug,
                         series: product.series,
                         price: displayPrice,
@@ -119,9 +122,9 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose, product })
                             <div className="min-w-0 flex-1">
                                 <p className="text-[10px] sm:text-xs font-semibold tracking-wider text-gray-400 uppercase">{product.series}</p>
                                 <h2 id="inquiry-title" className="text-lg sm:text-xl font-bold text-black uppercase tracking-tight mt-0.5 break-words">
-                                    {product.name}
+                                    {selectedSize ? `${product.name} - ${selectedSize}` : product.name}
                                 </h2>
-                                <p className="text-xs sm:text-sm font-medium text-gray-600 mt-1">{region === 'EG' ? product.priceEG : product.priceWorldwide}</p>
+                                <p className="text-xs sm:text-sm font-medium text-gray-600 mt-1">{selectedPrice || (region === 'EG' ? product.priceEG : product.priceWorldwide)}</p>
                             </div>
                         </div>
                         <FormattedText

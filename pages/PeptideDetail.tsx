@@ -31,12 +31,22 @@ const PeptideDetail: React.FC = () => {
   useEffect(() => {
     if (!product) return;
 
-    if (product.sizesEG && product.sizesEG.length > 0) {
-      setSelectedSize(product.sizesEG[0].size);
-      setSelectedPrice(product.sizesEG[0].price);
+    if (region === 'EG') {
+      if (product.sizesEG && product.sizesEG.length > 0) {
+        setSelectedSize(product.sizesEG[0].size);
+        setSelectedPrice(product.sizesEG[0].price);
+      } else {
+        setSelectedSize(product.size);
+        setSelectedPrice(product.priceEG);
+      }
     } else {
-      setSelectedSize(product.size);
-      setSelectedPrice(product.priceEG);
+      if (product.sizesWorldwide && product.sizesWorldwide.length > 0) {
+        setSelectedSize(product.sizesWorldwide[0].size);
+        setSelectedPrice(product.sizesWorldwide[0].price);
+      } else {
+        setSelectedSize(product.size);
+        setSelectedPrice(product.priceWorldwide);
+      }
     }
   }, [product, region]);
 
@@ -97,24 +107,24 @@ const PeptideDetail: React.FC = () => {
                   Price
                 </div>
                 <div className="text-xl sm:text-2xl font-black text-black">
-                  {region === 'EG' ? selectedPrice : product.priceWorldwide}
+                  {selectedPrice}
                 </div>
               </div>
               <div>
                 <div className="text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase mb-1">
                   Size
                 </div>
-                <div className="text-base sm:text-lg font-semibold text-black">{region === 'EG' ? selectedSize : product.size}</div>
+                <div className="text-base sm:text-lg font-semibold text-black">{selectedSize}</div>
               </div>
             </div>
 
-            {region === 'EG' && product.sizesEG && product.sizesEG.length > 0 && (
+            {((region === 'EG' && product.sizesEG && product.sizesEG.length > 0) || (region !== 'EG' && product.sizesWorldwide && product.sizesWorldwide.length > 0)) && (
               <div className="space-y-4">
                 <h2 className="text-xs font-black tracking-[0.25em] text-gray-400 uppercase">
                   Select Dosage
                 </h2>
                 <div className="grid grid-cols-2 gap-3">
-                  {product.sizesEG.map((s) => (
+                  {(region === 'EG' ? product.sizesEG! : (product.sizesWorldwide || [])).map((s) => (
                     <button
                       key={s.size}
                       onClick={() => {
@@ -253,6 +263,8 @@ const PeptideDetail: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         product={product}
+        selectedSize={selectedSize}
+        selectedPrice={selectedPrice}
       />
     </div>
   );
