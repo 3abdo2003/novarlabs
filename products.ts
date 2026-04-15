@@ -102,7 +102,7 @@ export const peptides: Product[] = [
     priceEG: '6,000 L.E',
     sizesEG: [
       { size: '50 mg / vial', price: '6,000 L.E' },
-      { size: '100 mg / vial', price: '7,000L.E' },
+      { size: '100 mg / vial', price: '12,000L.E' },
     ],
     priceWorldwide: '€85.00',
     sizesWorldwide: [
