@@ -133,7 +133,7 @@ export const peptides: Product[] = [
     slug: 'tesamorelin',
     name: 'TESAMORELIN',
     series: 'GROWTH',
-    priceEG: '9,500 L.E',
+    priceEG: '10,000 L.E',
     priceWorldwide: '€145.00',
     image: '/TESAMORELIN.png',
     size: '10 mg / vial',
