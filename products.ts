@@ -52,10 +52,10 @@ export const peptides: Product[] = [
     slug: 'retatrutide',
     name: 'RETATRUTIDE',
     series: 'METABOLIC',
-    priceEG: '6,000 L.E',
+    priceEG: '6,500 L.E',
     sizesEG: [
-      { size: '10 mg / vial', price: '6,000 L.E' },
-      { size: '20 mg / vial', price: '10,500 L.E' },
+      { size: '10 mg / vial', price: '6,500 L.E' },
+      { size: '20 mg / vial', price: '12,000 L.E' },
     ],
     priceWorldwide: '€95.00',
     sizesWorldwide: [
@@ -86,7 +86,7 @@ export const peptides: Product[] = [
     slug: 'bpc157-tb500',
     name: 'BPC157_TB500',
     series: 'REPAIR',
-    priceEG: '6,500 L.E',
+    priceEG: '7,000 L.E',
     priceWorldwide: '€107.00',
     image: '/BPC157_TB500-removebg-preview.png',
     size: '10 mg / vial',

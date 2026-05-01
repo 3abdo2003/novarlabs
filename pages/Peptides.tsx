@@ -88,7 +88,7 @@ const Peptides: React.FC = () => {
                                                 <div className="text-[10px] font-black tracking-[0.2em] text-gray-400 uppercase mb-1">{product.series}</div>
                                                 <h4 className="text-2xl font-black text-black uppercase tracking-tight">{product.name}</h4>
                                             </div>
-                                            <span className="font-black text-black">
+                                            <span className="font-black text-black text-sm whitespace-nowrap">
                                                 {region === 'EG' ? product.priceEG : product.priceWorldwide}
                                             </span>
                                         </div>
